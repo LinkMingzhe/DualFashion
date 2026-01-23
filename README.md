@@ -76,7 +76,7 @@ You can run the Inference_ifashion_PFITB.py and Inference_ifashion_GOR.py to tes
 It's for the following two tasks: 1) Personalized Fill-in-the-Blank (PFITB) - generating one matching item to complete the outfit, 
 and 2) Generative Outfit Recommendation (GOR) - building one completed outfit.
 
-## Evaliuation
+## Evaluation
 
 You can run the evaluate.py to get the quantitative results.
 
