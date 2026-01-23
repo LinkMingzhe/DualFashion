@@ -73,8 +73,7 @@ You further need to download the stable-diffusion-3-medium-diffusers and put it 
 
 You can run the Inference_ifashion_PFITB.py and Inference_ifashion_GOR.py to test the model performance.
 
-It's for the following two tasks:
-1) Personalized Fill-in-the-Blank (PFITB) - generating one matching item to complete the outfit, 
+It's for the following two tasks: 1) Personalized Fill-in-the-Blank (PFITB) - generating one matching item to complete the outfit, 
 and 2) Generative Outfit Recommendation (GOR) - building one completed outfit.
 
 ## Evaliuation
