@@ -25,21 +25,36 @@ pip install -r requirements.txt
 ## Project Structure
 After download the datasets, pre-trained models and checkpoins, the project structure should be:
 
-DualFashion/\\
-├── configs/\\
+DualFashion/
+
+├── configs/
+
 ├── sd3_modules/
+
 ├── dataset/
+
 ├── eval/
+
 ├── processed_info/
+
 ├── pretrained_models/
+
 ├── checkpoint/
+
 ├── Inference_ifashion_GOR.py
+
 ├── Inference_ifashion_PFITB.py
+
 ├── eval_utils.py
+
 ├── evaluate.py
+
 ├── requirements.txt
+
 ├── README.md
+
 └── .gitignore
+
 
 
 ## Datasets
