@@ -63,7 +63,7 @@ We follow the previous work [DiFashion](https://github.com/YiyanXu/DiFashion?tab
 
 To get user textual preference, we use Gemini to extract structured fashion item caption and further sample user preference in attribute level. All the captions and user preference data can be downloaded from [google drive](https://drive.google.com/drive/folders/1eigLDq2_3Jpyr2bWZgoXDZNJSFyB7I1x?usp=sharing) (DualFashion/processed_info).
 
-# Pre-trained Models
+## Pre-trained Models
 
 We release the checkpoint at [google drive](https://drive.google.com/drive/folders/1eigLDq2_3Jpyr2bWZgoXDZNJSFyB7I1x?usp=sharing) (DualFashion/checkpoint), and pre-trained model at (DualFashion/pretrained_models).
 
