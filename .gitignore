@@ -1,0 +1,17 @@
+# mac
+.DS_Store
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+
+# data / outputs / checkpoints (do NOT upload)
+processed_info/
+pretrained_models/
+eval/
+*.npy
+*.npz
+*.pth
+*.pt
+*.ckpt
