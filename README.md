@@ -58,7 +58,7 @@ You further need to download the stable-diffusion-3-medium-diffusers and put it 
 ## Project Structure
 
 ```text
-Dual-Diffusion/
+DualFashion/
 ├── baselines/
 │   └── DiFashion/
 ├── configs/
