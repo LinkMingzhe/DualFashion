@@ -38,6 +38,8 @@ pip install -r requirements.txt
 
 We use the datasets of iFashion and Polyvore-U, which include the required data of both fashion outfit and user-fashion item interactions. 
 
+To simplify the process of handling and merging the datasets, we provide the complete datasets for iFashion and Polyvore-U, which can be downloaded via the [Google Drive link](https://drive.google.com/drive/folders/1SipoOyu0FKwxceItxAfC_O7BeWS5xwVd?usp=sharing).
+
 To get user textual preference, we use Gemini to extract structured fashion item caption and further sample user preference in attribute level. 
 All the captions and user preference data can be downloaded from [google drive](https://drive.google.com/drive/folders/1eigLDq2_3Jpyr2bWZgoXDZNJSFyB7I1x?usp=sharing) (`{your_path}/processed_info`).
 
