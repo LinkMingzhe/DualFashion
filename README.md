@@ -1,6 +1,7 @@
 # DualFashion
 This is the implementation of DualFashion.
-(Dual-Diffusional Generative Fashion Recommendation)
+
+Dual-Diffusional Generative Fashion Recommendation (Accepted by SIGIR 2026)
 
 
 ## TODO List
