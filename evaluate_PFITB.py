@@ -44,11 +44,11 @@ parser.add_argument('--dims4fid', type=int, default=2048,
                           'By default, uses pool3 features'))
 parser.add_argument('--num_samples', type=int, default=5,
                     help='Number of samples per text-image pair.')
-parser.add_argument('--data_path', type=str, default='../dataset/ifashion/semantic_category')
-parser.add_argument('--pretrained_evaluator_ckpt', type=str, default='eval/compatibility_evaluator/ifashion-ckpt/fashion_evaluator.pth')
+parser.add_argument('--data_path', type=str, default='{your_path}/dataset/ifashion/semantic_category')
+parser.add_argument('--pretrained_evaluator_ckpt', type=str, default='{your_path}/eval/compatibility_evaluator/ifashion-ckpt/fashion_evaluator.pth')
 parser.add_argument('--dataset', type=str, default="ifashion")
-parser.add_argument('--output_dir', type=str, default="output/QualitativeResults")
-parser.add_argument('--eval_version', type=str, default="stage2_imgloss_inference_PFITB_lrem_878")
+parser.add_argument('--output_dir', type=str, default="{your_path}/output")
+parser.add_argument('--eval_version', type=str, default="{your_saved_model}")
 parser.add_argument('--task', type=str, default="FITB")
 parser.add_argument('--num_classes', type=int, default=50)
 parser.add_argument('--sim_func', type=str, default="cosine")
@@ -56,7 +56,7 @@ parser.add_argument('--lpips_net', type=str, default="vgg")
 parser.add_argument('--seed', type=int, default=123)
 parser.add_argument('--log_name', type=str, default="log") 
 parser.add_argument('--mode', type=str, default="test")
-parser.add_argument('--API_KEY', type=str, default='AIzaSyAt67OjtwLl2U4f3ySZyca0bYKmEA_bBjw')
+parser.add_argument('--API_KEY', type=str, default='{your_API}')
 
 SPECIAL_CATES = ["shoes", "pants", "sneakers", "boots", "earrings", "slippers", "sandals"]
 TEXT_ATTRIBUTE_KEYS = ["Color", "Material", "Design features", "Clothing Fashion Style"]
@@ -207,12 +207,12 @@ def main():
     set_random_seed(args.seed)
 
     if args.dataset == "ifashion":
-        args.data_path = '../dataset/ifashion'
-        args.pretrained_evaluator_ckpt = 'eval/compatibility_evaluator/ifashion-ckpt/ifashion_evaluator.pth'
+        args.data_path = '{your_path}/dataset/ifashion'
+        args.pretrained_evaluator_ckpt = '{your_path}/eval/compatibility_evaluator/ifashion-ckpt/ifashion_evaluator.pth'
         # args.output_dir = '/output/path/ifashion/xxx'
     elif args.dataset == "polyvore":
-        args.data_path = '../dataset/polyvore'
-        args.pretrained_evaluator_ckpt = 'eval/compatibility_evaluator/polyvore-ckpt/polyvore_evaluator.pth'
+        args.data_path = '{your_path}/dataset/polyvore'
+        args.pretrained_evaluator_ckpt = '{your_path}/eval/compatibility_evaluator/polyvore-ckpt/polyvore_evaluator.pth'
         # args.output_dir = '/output/path/polyvore/xxx'
     else:
         raise ValueError(f"Invalid dataset: {args.dataset}.")
@@ -236,7 +236,7 @@ def main():
     num_workers = args.num_workers
 
     id_cate_dict = np.load(os.path.join(args.data_path, "id_cate_dict.npy"), allow_pickle=True).item()
-    cid_to_label = np.load('eval/finetuned-inception/cid_to_label.npy', allow_pickle=True).item()  # map cid to inception predicted label
+    cid_to_label = np.load('{your_path}/eval/finetuned-inception/cid_to_label.npy', allow_pickle=True).item()  # map cid to inception predicted label
     cnn_features_clip = np.load(os.path.join(args.data_path, "cnn_features_clip.npy"), allow_pickle=True)
     cnn_features_clip = torch.tensor(cnn_features_clip)
 
@@ -348,7 +348,7 @@ def main():
         is_acc, is_entropy, _, is_score, _ = eval_utils.calculate_inception_score_given_data(
             gen_dataset,
             cate_dataset,
-            model_path='./eval/finetuned-inception/Inception-finetune-epoch300',
+            model_path='{your_path}/eval/finetuned-inception/Inception-finetune-epoch300',
             num_classes=args.num_classes,
             batch_size=args.batch_size, 
             device=device,
@@ -848,71 +848,71 @@ def main():
         # -------------------------------------------------------------- #
         #                   Evaluating Text_Compatibility                #
         # -------------------------------------------------------------- #
-        # print("Evaluating Text_Compatibility...")
-        # num = 0
-        # text_compat_attr_values = {key: [] for key in TEXT_ATTRIBUTE_KEYS}
-        # text_compat_detail = []
-        # if gemini_model is None:
-        #     print("Gemini model unavailable. Skipping Text_Compatibility scoring.")
-        # else:
-        #     for uid in tqdm(gen_data):
-        #         for oid in gen_data[uid]:
-        #             num += 1
-        #             if num > 2:
-        #                 break
-        #             sample_dir = os.path.join(gen_ckpt_dir, f"{uid}_{oid}")
-        #             incomplete_image_paths = sorted(glob.glob(os.path.join(sample_dir, "incomplete_outfit_*.png")))
-        #             gemini_images = [load_image_for_gemini(p) for p in incomplete_image_paths]
-        #             gemini_images = [img for img in gemini_images if img is not None]
-        #             if not gemini_images:
-        #                 continue
-        #             caption_file = os.path.join(sample_dir, "generated_caption.json")
-        #             if not os.path.exists(caption_file):
-        #                 continue
-        #             try:
-        #                 with open(caption_file, "r", encoding="utf-8") as handle:
-        #                     caption_info = json.load(handle)
-        #             except Exception:
-        #                 continue
-        #             for entry in caption_info.get("generated_captions", []):
-        #                 attr_dict = parse_attribute_fields(entry.get("generated_caption", ""))
-        #                 if not attr_dict:
-        #                     continue
-        #                 for key in TEXT_ATTRIBUTE_KEYS:
-        #                     attr_value = attr_dict.get(key, "").strip()
-        #                     if not attr_value:
-        #                         continue
-        #                     score = score_attribute_with_gemini(gemini_model, gemini_images, key, attr_value)
-        #                     if score is not None:
-        #                         text_compat_attr_values[key].append(score)
-        #                         text_compat_detail.append({
-        #                             "uid": int(uid),
-        #                             "oid": int(oid),
-        #                             "attribute": key,
-        #                             "attribute_value": attr_value,
-        #                             "score": score,
-        #                             "incomplete_outfit_images": incomplete_image_paths,
-        #                             "caption_sample_idx": entry.get("caption_sample_idx")
-        #                         })
+        print("Evaluating Text_Compatibility...")
+        num = 0
+        text_compat_attr_values = {key: [] for key in TEXT_ATTRIBUTE_KEYS}
+        text_compat_detail = []
+        if gemini_model is None:
+            print("Gemini model unavailable. Skipping Text_Compatibility scoring.")
+        else:
+            for uid in tqdm(gen_data):
+                for oid in gen_data[uid]:
+                    num += 1
+                    if num > 2:
+                        break
+                    sample_dir = os.path.join(gen_ckpt_dir, f"{uid}_{oid}")
+                    incomplete_image_paths = sorted(glob.glob(os.path.join(sample_dir, "incomplete_outfit_*.png")))
+                    gemini_images = [load_image_for_gemini(p) for p in incomplete_image_paths]
+                    gemini_images = [img for img in gemini_images if img is not None]
+                    if not gemini_images:
+                        continue
+                    caption_file = os.path.join(sample_dir, "generated_caption.json")
+                    if not os.path.exists(caption_file):
+                        continue
+                    try:
+                        with open(caption_file, "r", encoding="utf-8") as handle:
+                            caption_info = json.load(handle)
+                    except Exception:
+                        continue
+                    for entry in caption_info.get("generated_captions", []):
+                        attr_dict = parse_attribute_fields(entry.get("generated_caption", ""))
+                        if not attr_dict:
+                            continue
+                        for key in TEXT_ATTRIBUTE_KEYS:
+                            attr_value = attr_dict.get(key, "").strip()
+                            if not attr_value:
+                                continue
+                            score = score_attribute_with_gemini(gemini_model, gemini_images, key, attr_value)
+                            if score is not None:
+                                text_compat_attr_values[key].append(score)
+                                text_compat_detail.append({
+                                    "uid": int(uid),
+                                    "oid": int(oid),
+                                    "attribute": key,
+                                    "attribute_value": attr_value,
+                                    "score": score,
+                                    "incomplete_outfit_images": incomplete_image_paths,
+                                    "caption_sample_idx": entry.get("caption_sample_idx")
+                                })
 
-        # text_compat_attr_scores = {}
-        # valid_attribute_means = []
-        # for key in TEXT_ATTRIBUTE_KEYS:
-        #     values = text_compat_attr_values[key]
-        #     if values:
-        #         mean_score = float(np.mean(values))
-        #         text_compat_attr_scores[key] = mean_score
-        #         valid_attribute_means.append(mean_score)
-        #     else:
-        #         text_compat_attr_scores[key] = float("nan")
-        # text_compat_overall = float(np.mean(valid_attribute_means)) if valid_attribute_means else float("nan")
+        text_compat_attr_scores = {}
+        valid_attribute_means = []
+        for key in TEXT_ATTRIBUTE_KEYS:
+            values = text_compat_attr_values[key]
+            if values:
+                mean_score = float(np.mean(values))
+                text_compat_attr_scores[key] = mean_score
+                valid_attribute_means.append(mean_score)
+            else:
+                text_compat_attr_scores[key] = float("nan")
+        text_compat_overall = float(np.mean(valid_attribute_means)) if valid_attribute_means else float("nan")
 
-        # all_eval_metrics[ckpt]["Text Compatibility"] = {
-        #     "per_attribute": text_compat_attr_scores,
-        #     "overall": text_compat_overall
-        # }
-        # all_eval_metrics[ckpt]["Text Compatibility Detail"] = text_compat_detail
-        # np.save(eval_save_path, np.array(all_eval_metrics))
+        all_eval_metrics[ckpt]["Text Compatibility"] = {
+            "per_attribute": text_compat_attr_scores,
+            "overall": text_compat_overall
+        }
+        all_eval_metrics[ckpt]["Text Compatibility Detail"] = text_compat_detail
+        np.save(eval_save_path, np.array(all_eval_metrics))
         
 
         del outfits
@@ -940,13 +940,13 @@ def main():
             value = text_align_scores.get(key, float("nan"))
             score_str = f"{value:.2f}" if value == value else "N/A"
             print(" " * 2 + f"[{key}]: {score_str}")
-        # print("## Text_Compatibility ##")
-        # compat_overall_str = f"{text_compat_overall:.2f}" if text_compat_overall == text_compat_overall else "N/A"
-        # print(" " * 2 + f"[Overall]: {compat_overall_str}")
-        # for key in TEXT_ATTRIBUTE_KEYS:
-        #     value = text_compat_attr_scores.get(key, float("nan"))
-        #     score_str = f"{value:.2f}" if value == value else "N/A"
-        #     print(" " * 2 + f"[{key}]: {score_str}")
+        print("## Text_Compatibility ##")
+        compat_overall_str = f"{text_compat_overall:.2f}" if text_compat_overall == text_compat_overall else "N/A"
+        print(" " * 2 + f"[Overall]: {compat_overall_str}")
+        for key in TEXT_ATTRIBUTE_KEYS:
+            value = text_compat_attr_scores.get(key, float("nan"))
+            score_str = f"{value:.2f}" if value == value else "N/A"
+            print(" " * 2 + f"[{key}]: {score_str}")
         print("## Text_Diversity ##")
         sem_disp = f"{semantic_diversity:.2f}" if semantic_diversity == semantic_diversity else "N/A"
         attr_mean_disp = f"{attribute_entropy_mean:.2f}" if attribute_entropy_mean == attribute_entropy_mean else "N/A"

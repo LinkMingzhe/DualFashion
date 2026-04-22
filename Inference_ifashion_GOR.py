@@ -44,19 +44,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--models_root",
         type=str,
-        default="output/ifashion/stage2_models_v5",
+        default="{your_path}/checkpoint/{model_name}",
         help="Directory containing trained stage-2 checkpoints.",
     )
     parser.add_argument(
         "--output_root",
         type=str,
-        default="output/QualitativeResults/stage2_inference_GOR",
+        default="{your_path}/output",
         help="Directory to store sampling results.",
     )
     parser.add_argument(
         "--image_root",
         type=str,
-        default="/mnt/raid1/mzyu/dataset/ifashion/semantic_category",
+        default="{your_path}/dataset/ifashion/semantic_category",
         help="Root directory for raw fashion item images.",
     )
     parser.add_argument(
@@ -80,7 +80,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--num_inference_steps",
         type=int,
-        default=50,
+        default=28,
         help="Number of diffusion steps during sampling.",
     )
     parser.add_argument(
@@ -428,11 +428,11 @@ def main() -> None:
     os.makedirs(args.output_root, exist_ok=True)
 
     # Load data resources
-    test_grd = load_numpy_dict("/mnt/raid1/mzyu/dataset/ifashion/test_grd_dict.npy")
-    id_to_category = load_numpy_dict("/mnt/raid1/mzyu/dataset/ifashion/id_cate_dict.npy")
-    test_preferences = load_numpy_dict("processed_info/stage2_ifashion_test/test_preference.npy")
-    test_item_info = load_numpy_dict("processed_info/stage2_ifashion_test/item_info.npy")
-    test_image_paths = np.load("processed_info/stage2_ifashion_test/all_item_image_paths.npy", allow_pickle=True)
+    test_grd = load_numpy_dict("{your_path}/dataset/ifashion/test_grd_dict.npy")
+    id_to_category = load_numpy_dict("{your_path}/dataset/ifashion/id_cate_dict.npy")
+    test_preferences = load_numpy_dict("{your_path}/processed_info/stage2_ifashion_test/test_preference.npy")
+    test_item_info = load_numpy_dict("{your_path}/processed_info/item_info.npy")
+    test_image_paths = np.load("{your_path}/processed_info/all_item_image_paths.npy", allow_pickle=True)
 
     mask_keys = ["Color", "Material", "Design features", "Clothing Fashion Style"]
 

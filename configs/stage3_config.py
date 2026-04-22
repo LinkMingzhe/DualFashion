@@ -2,14 +2,14 @@ project_name = "SD3-stage3"
 run_name = "stage3-text-only"
 
 stage3_data_config = dict(
-    train_data_path="processed_info/stage3_data_augmentation/data_augmentation.npy",
-    id_cate_dict_path="/mnt/raid1/mzyu/dataset/ifashion/id_cate_dict.npy",
+    train_data_path="{your_path}/processed_info/stage3_data_augmentation/data_augmentation.npy",
+    id_cate_dict_path="{your_path}/dataset/ifashion/id_cate_dict.npy",
     max_length=256,
     mask_target_keys=["Color", "Material", "Design features", "Clothing Fashion Style"],
 )
 
-resume_from_legacy = "output/ifashion/stage2_models_v5/0057501/transformer/diffusion_pytorch_model.safetensors"
-sd3_pipeline_load_from = "pretrained_models/stable-diffusion-3-medium-diffusers"
+resume_from_legacy = "{your_path}/{checkpoint_path}/transformer/diffusion_pytorch_model.safetensors"
+sd3_pipeline_load_from = "{your_path}/pretrained_models/stable-diffusion-3-medium-diffusers"
 
 training = dict(
     sampling_eps=1e-3,

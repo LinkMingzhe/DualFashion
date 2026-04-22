@@ -5,7 +5,7 @@ run_name = 'joint-pretrain'
 t2i_json_lst = ['text_to_image_30k.json']
 t2i_data_config = dict(
     roots=[
-            './processed_info/stage1_ifashion/',
+            '{your_path}/processed_info/stage1_ifashion/',
             ],
     json_lst=t2i_json_lst,
     resolution=512,
@@ -19,7 +19,7 @@ i2t_json_lst = ['image_to_text_30k.json']
 # i2t
 i2t_data_config = dict(
     roots=[
-        './processed_info/stage1_ifashion/',
+        '{your_path}/processed_info/stage1_ifashion/',
     ],
     json_lst=i2t_json_lst,
     resolution=512,
@@ -29,10 +29,10 @@ i2t_data_config = dict(
 )
 
 
-resume_from_legacy = 'pretrained_models/dual_diff_sd3_512_base/transformer/diffusion_pytorch_model.safetensors'
-pretrained_mask_emb = 'pretrained_models/aligned_t5_mask_emb/mask_token_emb.00-of-01.pth'
-noise_scheduler_pretrained = 'pretrained_models/stable-diffusion-3-medium-diffusers/scheduler'
-sd3_pipeline_load_from = 'pretrained_models/stable-diffusion-3-medium-diffusers'
+resume_from_legacy = '{your_path}/pretrained_models/dual_diff_sd3_512_base/transformer/diffusion_pytorch_model.safetensors'
+pretrained_mask_emb = '{your_path}/pretrained_models/aligned_t5_mask_emb/mask_token_emb.00-of-01.pth'
+noise_scheduler_pretrained = '{your_path}/pretrained_models/stable-diffusion-3-medium-diffusers/scheduler'
+sd3_pipeline_load_from = '{your_path}/pretrained_models/stable-diffusion-3-medium-diffusers'
 
 # resume_from_legacy = None
 # pretrained_mask_emb = '/mnt/bn/us-aigc-temp/zjl_data/mask_token_emb.00-of-01.pth'
